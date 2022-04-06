@@ -1,4 +1,4 @@
-from sportsipy.nfl.boxscore import Boxscores, Boxscore
+colcofrom sportsipy.nfl.boxscore import Boxscores, Boxscore
 import pandas as pd 
 
 seasons = [2000, 2010]

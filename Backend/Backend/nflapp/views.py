@@ -24,14 +24,7 @@ class MainView(TemplateView):
 class SearchResultsView(ListView):
     model = Link
     template_name = 'results.html'
-    '''
-    def search(self, request):
-        query = request.GET('q')
-        results = Game.objects.filter(
-            Q(winner__icontains=query)
-        )
-        return render(request, 'results.html', {'results': results})
-    '''
+
     def get(self, *args, **kwargs):
         query = self.request.GET.get('q')
         game_id = self.get_game_id(query)
@@ -43,28 +36,20 @@ class SearchResultsView(ListView):
 
         
     def get_queryset(self):
-        #query = self.request.GET.get('q')
-        #object_list = Game.objects.filter(
-        #    Q(winner__icontains=query)
-        #)
         object_list = Link.objects.all
         return object_list
 
     def get_context_data(self, **kwargs):
         query = self.request.GET.get('q')
         game_id = self.get_game_id(query)
-        print(game_id)
         full = 0
         df, box_score_links = self.get_game_recs(game_id, 300, 0)
-        #print(df[2:])
-        #box_score = self.get_link(game_id)
-        #link = f'https://www.pro-football-reference.com/boxscores/{game_id}.htm'
+
         youtube_links = self.get_youtube_links(df)
         data = super().get_context_data(**kwargs)
         data['game_name'] = query
         data['df'] = zip(df, box_score_links, youtube_links)
-        #data['box_score_links'] = box_score_links
-        #data['box_score_link'] = link
+  
         if full:
             data['header'] = []
         else:
@@ -95,10 +80,6 @@ class SearchResultsView(ListView):
         team2 = ' '.join(team2)
         week_year = query1[ind_week+1:]
         week_year = '-'.join(week_year)
-        #team1 = query1[0] + ' ' + query1[1]
-        #team2 = query1[3] + ' ' + query1[4]
-        #week_year = query1[6] + '-' + query1[7]
-        print(team1, team2, week_year)
         df = pd.read_csv(data_path, index_col = False)
         try:
             df = df[df['Week-Year'] == week_year]
@@ -106,8 +87,6 @@ class SearchResultsView(ListView):
             df1 = df1[df1['away_team'].str.lower() == team2.lower()]
             df2 = df[df['home_team'].str.lower() == team2.lower()]
             df2 = df2[df2['away_team'].str.lower() == team1.lower()]
-            #print(df1.game_id.values[0])
-            #print(df2)
             if not df1.empty:
                 game_id = df1['game_id'].values[0]
                 return game_id
@@ -125,5 +104,4 @@ class SearchResultsView(ListView):
             away_team = game[2]
             week, year = week_year.split('-')
             links.append(f'https://www.youtube.com/results?search_query={home_team}+vs+{away_team}+Week+{week}+{year}')
-        print(links)
         return links

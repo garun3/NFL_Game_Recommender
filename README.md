@@ -12,3 +12,4 @@ To run web app:
 
 1. Navigate to NFL_Game_Recommender/Backend/Backend
 2. run command python manage.py runserver
+3. Search in this format 'Arizona Cardinals vs Seattle Seahawks Week 1 2012'

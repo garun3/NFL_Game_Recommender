@@ -7,3 +7,8 @@
 2. Run the command "./run_recommendation.sh <GAME_ID> <NUM OF RECOMMENDED GAMES> <FULL RESULTS (0 or 1)>"
 
 	For examples "./run_recommendation.sh 199212060buf 8 1"
+
+To run web app:
+
+1. Navigate to NFL_Game_Recommender/Backend/Backend
+2. run command python manage.py runserver

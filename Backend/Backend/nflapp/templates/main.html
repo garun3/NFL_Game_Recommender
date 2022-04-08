@@ -1,0 +1,35 @@
+<html>
+       
+{% load static %}
+<head>
+<link rel="stylesheet" type="text/css" href="{% static 'nflapp/style.css' %}">
+</head>
+<body>
+<h1>NFL Game Recommender</h1>
+
+<form id="form" action="{% url 'results' %}" method="get">
+       <input name="q" typ="text" placeholder="Search for games">
+       <button type="submit">submit</button>
+</form>
+{% if messages %}
+<ul class="messages" style="list-style-type:none;">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<script>
+       var select, i, option;
+
+       select = document.getElementById( 'test' );
+
+       for ( i = 12; i <= 100; i += 1 ) {
+       for (var age = 12; age <= 100; age++) {
+              select.add(new Option(age));
+       }
+       }
+</script>
+
+</body>
+</html>

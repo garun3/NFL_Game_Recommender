@@ -1,0 +1,33 @@
+<html>
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'nflapp/style.css' %}">
+<body>
+<h1>Search Results</h1>
+<h3>Game: {{ game_name }}</h3>
+<h4>Similar Games:</h4>
+<table>
+  <tr>
+    {% for value in header %}
+      <th>{{ value }}</th>
+    {% endfor %}
+  </tr>
+  {% for game, box_score_link, youtube_link in df %}
+  <td>
+  <tr>
+      {% for value in game %}
+      <th>{{ value }}</th> 
+      
+      {% endfor %}
+      <th><a href="{{ box_score_link }}" target="_blank">{{ box_score_link }}</a>
+      </th>
+      <th><a href="{{ youtube_link }}" target="_blank">{{ youtube_link }}</a>
+      </th>
+
+  </tr> 
+  
+</td> 
+  {% endfor %}
+</table>
+</body>
+</html>

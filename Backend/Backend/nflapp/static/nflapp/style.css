@@ -1,0 +1,40 @@
+html * {
+  font-family: 'Courier New', Courier, monospace;
+  
+}
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: lightblue;
+    line-height: 2 ;
+    font-size: 30px;
+    text-align: center;
+  }
+
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    color: navy;
+    text-align: center;
+  }
+
+h3 {
+    font-family: 'Courier New', Courier, monospace;
+    color: navy;
+    text-align: center;
+  }
+li {
+  line-height: 1 ;
+}
+
+table {
+  counter-reset: row-num;
+}
+
+form {
+  text-align: center;
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}

@@ -11,8 +11,19 @@ def find_closest_game(full_data, kmeans_result, input_game, num_games=5, full=1)
   same_cluster = kmeans_result[kmeans_result.labels == cluster]
   same_cluster.loc[:,'distances'] = dists
   same_cluster = same_cluster.sort_values(by='distances')
+  #print(same_cluster.head(num_games+1))
   closest = same_cluster.game_id.tolist()[1:(num_games+1)]
-  similar_games = full_data[full_data.game_id.isin(closest)]
+  #print(closest)
+
+
+  similar_games = pd.DataFrame()
+
+  for game in closest:
+    similar_games = pd.concat([similar_games, full_data[full_data.game_id == game]])
+
+  #similar_games = full_data.query('game_id in @closest')
+  #print("     SIMILAR GAMES")
+  #print(similar_games)
   links = list('https://www.pro-football-reference.com/boxscores/' + similar_games['game_id'] + '.htm')
 
   if full:
@@ -36,5 +47,6 @@ if __name__ == "__main__":
 
   full_data = pd.read_csv(full_data_path, index_col = False)
   kmeans_data = pd.read_csv(kmeans_path, index_col = False)
+
   
   print(find_closest_game(full_data, kmeans_data, input_game, num_games=num_games, full=full))

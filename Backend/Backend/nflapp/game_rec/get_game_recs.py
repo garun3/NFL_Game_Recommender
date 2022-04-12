@@ -10,7 +10,7 @@ def find_closest_game(full_data, kmeans_result, input_game, num_games=5, full=1)
     dists.append(np.linalg.norm(d))
   same_cluster = kmeans_result[kmeans_result.labels == cluster]
   same_cluster.loc[:,'distances'] = dists
-  same_cluster.sort_values(by='distances')
+  same_cluster = same_cluster.sort_values(by='distances')
   closest = same_cluster.game_id.tolist()[1:(num_games+1)]
   similar_games = full_data[full_data.game_id.isin(closest)]
   links = list('https://www.pro-football-reference.com/boxscores/' + similar_games['game_id'] + '.htm')

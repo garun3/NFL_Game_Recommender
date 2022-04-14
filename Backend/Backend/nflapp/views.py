@@ -5,9 +5,9 @@ from django.views.generic import TemplateView, ListView
 from django.db.models import Q
 from django.contrib import messages
 from django.shortcuts import redirect
-from .models import Link
-from .models import Game
+from .models import Link, Game
 from .game_rec.get_game_recs import *
+
 
 import pandas as pd 
 import numpy as np
@@ -17,17 +17,19 @@ import os
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
+
 class MainView(TemplateView):
     template_name = 'main.html'
-    #context = 
 
 class SearchResultsView(ListView):
     model = Link
     template_name = 'results.html'
 
     def get(self, *args, **kwargs):
-        query = self.request.GET.get('q')
-        game_id = self.get_game_id(query)
+        season = self.request.GET.get('season')
+        week = self.request.GET.get('week')
+        game = self.request.GET.get('game')
+        game_id, query = self.get_game_id(game, week, season)
         if game_id is None:
             messages.error(self.request, f'{query} is not a valid game. Please try another one.')
             return redirect('/')
@@ -40,16 +42,19 @@ class SearchResultsView(ListView):
         return object_list
 
     def get_context_data(self, **kwargs):
-        query = self.request.GET.get('q')
-        game_id = self.get_game_id(query)
+        season = self.request.GET.get('season')
+        week = self.request.GET.get('week')
+        game = self.request.GET.get('game')
+        num_games = self.request.GET.get('num_games')
+        game_id, q = self.get_game_id(game, week, season)
         full = 0
-        df, box_score_links = self.get_game_recs(game_id, 300, 0)
+        df, box_score_links = self.get_game_recs(game_id, int(num_games), 0)
 
         youtube_links = self.get_youtube_links(df)
         data = super().get_context_data(**kwargs)
-        data['game_name'] = query
+
+        data['game_name'] = q
         data['df'] = zip(df, box_score_links, youtube_links)
-  
         if full:
             data['header'] = []
         else:
@@ -68,31 +73,35 @@ class SearchResultsView(ListView):
         
         return find_closest_game(full_data, kmeans_data, input_game, num_games=num_games, full=full)
     
-    def get_game_id(self, query):
+    def get_game_id(self, game, week, season):
         data_path = os.path.dirname(os.path.abspath(__file__)) + '/game_rec/basic_game_info.csv'
 
-        query1 = query.split(' ')
-        ind_vs = query1.index('vs')
-        ind_week = query1.index('Week')
-        team1 = query1[0:ind_vs]
-        team2 = query1[ind_vs+1:ind_week]
-        team1 = ' '.join(team1)
-        team2 = ' '.join(team2)
-        week_year = query1[ind_week+1:]
-        week_year = '-'.join(week_year)
+        ind_vs = game.index('vs')
+        
+        team1 = game[0:ind_vs-1]
+        team2 = game[ind_vs+3:]
+        week_year = week + '-' + season
+
         df = pd.read_csv(data_path, index_col = False)
+
+        query = game + ' ' + season + ' Week ' + week
+
+        print(team1, team2, week_year)
         try:
             df = df[df['Week-Year'] == week_year]
             df1 = df[df['home_team'].str.lower() == team1.lower()]
             df1 = df1[df1['away_team'].str.lower() == team2.lower()]
             df2 = df[df['home_team'].str.lower() == team2.lower()]
             df2 = df2[df2['away_team'].str.lower() == team1.lower()]
+            print(df)
+            print(df1)
+            print(df1)
             if not df1.empty:
                 game_id = df1['game_id'].values[0]
-                return game_id
+                return game_id, query
             elif not df2.empty:
                 game_id = df2['game_id'].values[0]
-                return game_id
+                return game_id, query
         except:
             return None
     

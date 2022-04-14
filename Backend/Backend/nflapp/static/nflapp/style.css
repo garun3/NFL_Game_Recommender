@@ -2,6 +2,18 @@ html * {
   font-family: 'Courier New', Courier, monospace;
   
 }
+
+.SearchBar {
+  position: absolute;
+  top: 355px;
+  left: 575px;
+}
+
+.SearchBar input {
+  height: 100px;
+  width: 100px;
+}
+
 body {
     font-family: 'Courier New', Courier, monospace;
     background-color: lightblue;
@@ -9,6 +21,9 @@ body {
     font-size: 30px;
     text-align: center;
   }
+
+
+
 
 h1 {
     font-family: 'Courier New', Courier, monospace;
@@ -27,14 +42,4 @@ li {
 
 table {
   counter-reset: row-num;
-}
-
-form {
-  text-align: center;
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
 }

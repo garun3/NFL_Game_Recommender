@@ -10,16 +10,23 @@
 
               var season = document.getElementById('season');
               var week = document.getElementById('week');
+              var num_games = document.getElementById('num_games');
               
               season.options[0] = new Option('--Season--', '');
               week.options[0] = new Option('--Week--', '');
+              num_games.options[0] = new Option('--Number of Results--', '');
               var seasonNum = 1991
               for (let i = 1; i < 32; i++) { 
                      season.options[i] = new Option(seasonNum, seasonNum);
                      seasonNum += 1
               }
+              
               for (let i = 1; i < 19; i++) { 
                      week.options[i] = new Option(i, i);
+              }
+
+              for (let i = 1; i < 201; i++) { 
+                     num_games.options[i] = new Option(i, i);
               }
        });   
 
@@ -39,8 +46,8 @@
               <select class="form-control"  id='game' name='game'>
               </select>
               
-              <input name="num_games" typ="text" placeholder="Number of results" id='num_games'>
-
+              <select name="num_games" typ="text" placeholder="Number of results" default=10 id='num_games'>
+              </select>
               <button type="submit">submit</button>
 	</form>
 </div>

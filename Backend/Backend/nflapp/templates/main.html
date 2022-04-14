@@ -7,27 +7,24 @@
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script>
        $(document).ready(function () {
-
+              //const path = require('path');
+              //console.log(document.location.pathname);
+              //console.log(path.dirname('/NFL_Game_Recommender/Backend/Backend/nflapp/game_rec'))
               var season = document.getElementById('season');
               var week = document.getElementById('week');
-              var num_games = document.getElementById('num_games');
               
               season.options[0] = new Option('--Season--', '');
               week.options[0] = new Option('--Week--', '');
-              num_games.options[0] = new Option('--Number of Results--', '');
               var seasonNum = 1991
               for (let i = 1; i < 32; i++) { 
                      season.options[i] = new Option(seasonNum, seasonNum);
                      seasonNum += 1
               }
-              
               for (let i = 1; i < 19; i++) { 
                      week.options[i] = new Option(i, i);
               }
-
-              for (let i = 1; i < 201; i++) { 
-                     num_games.options[i] = new Option(i, i);
-              }
+              //list1.options[1] = new Option('Snacks', 'Snacks');
+              //list1.options[2] = new Option('Drinks', 'Drinks');
        });   
 
 </script>
@@ -45,9 +42,9 @@
               
               <select class="form-control"  id='game' name='game'>
               </select>
-              
-              <select name="num_games" typ="text" placeholder="Number of results" default=10 id='num_games'>
-              </select>
+              <!--<div class="caption">Number of Results</div>-->
+              <input name="num_games" typ="text" placeholder="Number of results" value="10" id='num_games'>
+
               <button type="submit">submit</button>
 	</form>
 </div>
@@ -46402,13 +46399,17 @@
   },
 ]
        var g = []
+       console.log(week_year)
 
-       for (const game of games) {  
+       for (const game of games) {
+              console.log(game.Week_Year)  
               if (game.Week_Year == week_year) {
+                     console.log(game.Week_Year)
                      g.push(game.home_team + ' vs ' + game.away_team)
               }      
        
        }
+       console.log("hi")
        var i = 1
        week_games.options[0] = new Option('--Game--', '');
        for (const game of g) { 

@@ -1,5 +1,7 @@
 # NFL_Game_Recommender
 
+This repository contains code for and NFL Game Recommender. It uses characteristics of a user-inputted game to recommend similar games using clustering methods. The application is built using Django.
+
 #How To Run Shell Script
 
 1. Run the command "chmod +x run_recommendation.sh"
